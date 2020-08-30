@@ -1,0 +1,45 @@
+---
+title: Blog Post 1
+author: Lachlan Moody
+date: '2020-08-30'
+slug: blog-post-1
+categories:
+  - Argentina
+tags:
+  - COVID
+  - Corona Virus
+  - Argentina
+  - Tables
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2020-08-30T17:24:45+10:00'
+featured: no
+featuredImage: "featured.jpg"
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+# Data Description
+```{r setup, include=FALSE}
+library(tidyverse)
+library(tidycovid19)
+library(zoo)
+library(kableExtra)
+
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Data Story
+```{r}
+test <- download_merged_data(silent = TRUE, cached = TRUE) %>%
+  filter(country == "Argentina")
+test %>%
+  select(iso3c, country) %>%
+head() %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("bordered", "striped", "hover"))
+```
+
