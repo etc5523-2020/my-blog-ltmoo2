@@ -42,16 +42,49 @@ arg_data_clean <- arg_data %>%
          lag_deaths = lag(deaths),
          daily_deaths = deaths - lag_deaths,
          lag_recovered = lag(recovered),
-         daily_recovered = recovered - lag_recovered) %>%
-  select(country, date, confirmed, daily_confirmed, deaths, daily_deaths, recovered, daily_recovered, soc_dist:apple_mtr_walking, gcmr_retail_recreation:gcmr_residential)
+         daily_recovered = recovered - lag_recovered,
+         active = confirmed-recovered,
+         lag_active = lag(active),
+         daily_active = active - lag_active) %>%
+  select(country, date, confirmed, daily_confirmed, deaths, daily_deaths, recovered, daily_recovered, daily_active, active, soc_dist:apple_mtr_walking, gcmr_retail_recreation:gcmr_residential)
 ```
 
-
-```{r inteactive}
+```{r interactive1}
 arg_interactive_data <- arg_data_clean %>%
   mutate(apple_mtr_driving = apple_mtr_driving - 100,
          apple_mtr_walking = apple_mtr_walking - 100)
 
+explore <- arg_interactive_data %>%
+  select(Date = date,
+         "Daily Confirmed Cases" = daily_confirmed,
+         "Total Confirmed Cases" = confirmed,
+         "Daily Recoveries" = recovered,
+         "Total Recoveries" = daily_recovered,
+         "Daily Active Cases" = daily_active,
+         "Total Active Cases" = active,
+         "Daily Deaths" = daily_deaths,
+         "Total Deaths" = deaths)
+
+datatable(explore, 
+          escape = FALSE,
+          filter = 'top',
+          caption = htmltools::tags$caption( style = 'caption-side: top; text-align: center; color:black; font-size:200% ;','COVID19 case statistics in Argentina'),
+          options = list(columnDefs = list(list(className = 'dt-right', targets = 2:5)),
+                         fnDrawCallback = htmlwidgets::JS(
+  '
+function(){
+  HTMLWidgets.staticRender();
+}
+'
+)
+       )) %>%
+  spk_add_deps() 
+```
+
+
+
+
+```{r inteactive2}
 spk_test <- data.frame(
   Measure = c("driving","walking", "retail/recreation", "grocery/pharmacy", "parks", "transit/stations", "workplaces", "residential"),
   Trend = c(spk_chr(arg_interactive_data$apple_mtr_driving),
