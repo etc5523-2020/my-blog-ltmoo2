@@ -48,22 +48,26 @@ arg_data_clean <- arg_data %>%
 
 
 ```{r inteactive}
+arg_interactive_data <- arg_data_clean %>%
+  mutate(apple_mtr_driving = apple_mtr_driving - 100,
+         apple_mtr_walking = apple_mtr_walking - 100)
+
 spk_test <- data.frame(
-  measure = c("driving","walking", "retail/recreation", "grocery/pharmacy", "parks", "transit/stations", "workplaces", "residential"),
-  sparkline = c(spk_chr(arg_data$apple_mtr_driving),
-  spk_chr(arg_data$apple_mtr_walking),
-  spk_chr(arg_data$gcmr_retail_recreation),
-  spk_chr(arg_data$gcmr_grocery_pharmacy),
-  spk_chr(arg_data$gcmr_parks),
-  spk_chr(arg_data$gcmr_transit_stations),
-  spk_chr(arg_data$gcmr_workplaces),
-  spk_chr(arg_data$gcmr_residential)
+  Measure = c("driving","walking", "retail/recreation", "grocery/pharmacy", "parks", "transit/stations", "workplaces", "residential"),
+  Trend = c(spk_chr(arg_interactive_data$apple_mtr_driving),
+  spk_chr(arg_interactive_data$apple_mtr_walking),
+  spk_chr(arg_interactive_data$gcmr_retail_recreation),
+  spk_chr(arg_interactive_data$gcmr_grocery_pharmacy),
+  spk_chr(arg_interactive_data$gcmr_parks),
+  spk_chr(arg_interactive_data$gcmr_transit_stations),
+  spk_chr(arg_interactive_data$gcmr_workplaces),
+  spk_chr(arg_interactive_data$gcmr_residential)
 ))
 
 spk_test  <- spk_test %>%
-  arrange(measure)
+  arrange(Measure)
 
-test2 <- arg_data_clean %>%
+test2 <- arg_interactive_data %>%
   select(driving = apple_mtr_driving,
          walking = apple_mtr_walking,
          "grocery/pharmacy" = gcmr_grocery_pharmacy,
@@ -71,16 +75,30 @@ test2 <- arg_data_clean %>%
          residential = gcmr_residential,
          "retail/recreation" = gcmr_retail_recreation,
          "transit/stations" = gcmr_transit_stations,
-         "workplaces" = gcmr_workplaces) %>%
-  pivot_longer(cols = driving:workplaces, names_to = "measure") %>%
-  group_by(measure) %>%
-  summarise(average = mean(value, na.rm = TRUE))
+         "workplaces" = gcmr_workplaces,
+         date) %>%
+  pivot_longer(cols = driving:workplaces, names_to = "Measure") %>%
+  filter(!is.na(value)) %>%
+  group_by(Measure) %>%
+  summarise("First Observation" = min(date),
+            Observations = n(),
+            "Average Change" = formatC(round(mean(value), digits =2), format = 'f', digits =2),
+            "Standard Deviation" = formatC(round(sd(value), digits =2), format = 'f', digits =2))
+
+
+test2 <- test2 %>%
+  mutate("Average Change" = paste(`Average Change`,"%"),
+         "Standard Deviation" = paste(`Standard Deviation`, "%"))
 
 joint <- left_join(test2, spk_test)
 
-datatable(joint, escape = FALSE,
+datatable(joint, 
+          escape = FALSE,
           filter = 'top',
-          options = list(paging = FALSE, fnDrawCallback = htmlwidgets::JS(
+          caption = htmltools::tags$caption( style = 'caption-side: top; text-align: center; color:black; font-size:200% ;','Effect of COVID 19 on public movement'),
+          options = list(paging = FALSE, 
+                         columnDefs = list(list(className = 'dt-right', targets = 2:5)),
+                         fnDrawCallback = htmlwidgets::JS(
   '
 function(){
   HTMLWidgets.staticRender();
@@ -88,7 +106,7 @@ function(){
 '
 )
        )) %>%
-  spk_add_deps()
+  spk_add_deps() 
 ```
 
 
