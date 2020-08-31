@@ -68,11 +68,17 @@ lm_table <- bind_cols(lm_tidy,
           lm_glance) %>%
   select(term, estimate, r.squared, "p value" = p.value...5)
 
+lm_table$estimate = cell_spec(lm_table$estimate, color = ifelse(lm_table$estimate < 0, "white", "black"), background = ifelse(lm_table$estimate < 0, "green", "white"))
 
-lm_table %>% 
-  kable(caption = "Model comparisons for protective health measures", 
+lm_table$`p value` = cell_spec(lm_table$`p value`, color = ifelse(lm_table$`p value` > 0.05, "white", "black"), background = ifelse(lm_table$`p value` > 0.05, "red", "white"))
+
+lm_table$r.squared = cell_spec(lm_table$r.squared, color = ifelse(lm_table$r.squared > 0.3, "white", "black"), background = ifelse(lm_table$r.squared > 0.3, "green", "white"))
+
+
+lm_table %>%
+  kable(escape = F,
+        caption = "Model comparisons for protective health measures", 
         format.args = list(digits = 2)) %>%
-  kable_styling(bootstrap_options = c("bordered","striped", "hover")) %>%
-  cell_spec(color = ifelse(lm_table$estimate < 0, "green", "red"))
+  kable_styling(bootstrap_options = c("bordered","striped", "hover"))
 ```
 
