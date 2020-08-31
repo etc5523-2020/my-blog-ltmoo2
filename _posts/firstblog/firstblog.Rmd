@@ -21,7 +21,9 @@ library(ggplot2)
 library(kableExtra)
 library(DT)
 library(broom)
+library(sparkline)
 knitr::opts_chunk$set(echo = FALSE, message = FALSE)
+sparkline(0)
 ```
 
 ## Data Story
@@ -39,6 +41,34 @@ arg_data_clean <- arg_data %>%
          daily_recovered = recovered - lag_recovered) %>%
   select(country, date, confirmed, daily_confirmed, deaths, daily_deaths, recovered, daily_recovered, soc_dist:apple_mtr_walking, gcmr_retail_recreation:gcmr_residential)
 ```
+
+
+```{r inteactive}
+spk_test <- data.frame(
+  var = ("walk"),
+  sparkline = spk_chr(arg_data$apple_mtr_walking)
+)
+
+arg_data_test <- arg_data_clean %>%
+  summarise(walk = mean(apple_mtr_walking, na.rm = TRUE))
+
+
+joint <- bind_cols(arg_data_test, spk_test)
+
+
+datatable(joint, escape = FALSE,
+          filter = 'top',
+          options = list(paging = FALSE, fnDrawCallback = htmlwidgets::JS(
+  '
+function(){
+  HTMLWidgets.staticRender();
+}
+'
+)
+       )) %>%
+  spk_add_deps()
+```
+
 
 
 ```{r static}
@@ -68,17 +98,26 @@ lm_table <- bind_cols(lm_tidy,
           lm_glance) %>%
   select(term, estimate, r.squared, "p value" = p.value...5)
 
-lm_table$estimate = cell_spec(lm_table$estimate, color = ifelse(lm_table$estimate < 0, "white", "black"), background = ifelse(lm_table$estimate < 0, "green", "white"))
 
-lm_table$`p value` = cell_spec(lm_table$`p value`, color = ifelse(lm_table$`p value` > 0.05, "white", "black"), background = ifelse(lm_table$`p value` > 0.05, "red", "white"))
-
-lm_table$r.squared = cell_spec(lm_table$r.squared, color = ifelse(lm_table$r.squared > 0.3, "white", "black"), background = ifelse(lm_table$r.squared > 0.3, "green", "white"))
-
-
-lm_table %>%
+lm_table_final <- lm_table %>%
+  mutate(estimate = round(lm_table$estimate, digits = 2),
+         r.squared = formatC(round(lm_table$r.squared, digits = 2), format = 'f', digits = 2),
+         "p value" = formatC(round(lm_table$`p value`, digits = 2), format = 'f', digits =2)) %>%
+  mutate(estimate = cell_spec(estimate, 
+                              color = if_else(estimate < 0, "white", "black"), 
+                              background = ifelse(estimate < 0, "green", "white")),
+         r.squared = cell_spec(r.squared, color = ifelse(r.squared > 0.3, "white", "black"), 
+                               background = ifelse(r.squared > 0.3, "green", "white")),
+         "p value" = cell_spec(`p value`, color = ifelse(`p value` > 0.05, "black", "white"),
+                               background = ifelse(lm_table$`p value` < 0.05, "green", "white"))) %>%
   kable(escape = F,
         caption = "Model comparisons for protective health measures", 
-        format.args = list(digits = 2)) %>%
+        format.args = list(digits = 2),
+        align = "lrrr") %>%
   kable_styling(bootstrap_options = c("bordered","striped", "hover"))
+
+lm_table_final
+
+
 ```
 
