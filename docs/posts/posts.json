@@ -1,18 +1,18 @@
 [
   {
     "path": "posts/firstblog/",
-    "title": "This is my first blog",
-    "description": "This is my first test blog",
+    "title": "Blog Post 1",
+    "description": "This blog post explores the impact of COVID-19 in Argentina. In particular, the various protective health measures introduced by the government will be evaluated based on their ability to effectively reduce people's movements and ultimately stop the spread of the virus.",
     "author": [
       {
         "name": "Lachlan Moody",
-        "url": "https://example.com/norajones"
+        "url": {}
       }
     ],
     "date": "2020-08-27",
     "categories": [],
     "preview": {},
-    "last_modified": "2020-08-31T11:32:46+10:00",
-    "input_file": {}
+    "last_modified": "2020-08-31T13:22:52+10:00",
+    "input_file": "firstblog.utf8.md"
   }
 ]

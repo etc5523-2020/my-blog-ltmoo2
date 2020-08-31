@@ -1,12 +1,11 @@
 ---
-title: "This is my first blog"
+title: "Blog Post 1"
 description: |
-  This is my first test blog
+  This blog post explores the impact of COVID-19 in Argentina. In particular, the various protective health measures introduced by the government will be evaluated based on their ability to effectively reduce people's movements and ultimately stop the spread of the virus.
 author:
   - name: Lachlan Moody 
-    url: https://example.com/norajones
-    affiliation: Spacely Sprockets
-    affiliation_url: https://example.com/spacelysprokets
+    affiliation: Monash University
+    affiliation_url: https://www.monash.edu/
 date: 08-27-2020
 output:
   distill::distill_article:
@@ -18,31 +17,62 @@ output:
 library(tidyverse)
 library(tidycovid19)
 library(zoo)
+library(ggplot2)
 library(kableExtra)
 library(DT)
-library(widgetframe)
-knitr::opts_chunk$set(echo = FALSE)
+library(broom)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE)
 ```
 
 ## Data Story
 ```{r data, include = FALSE}
-arg_data <- download_merged_data(silent = TRUE, cached = TRUE)
+arg_data <- download_merged_data(silent = TRUE, cached = TRUE) %>%
+  filter(country == "Argentina")
   
 
-arg_data_clean <- arg_data %>% filter(country == "Argentina") %>%
+arg_data_clean <- arg_data %>%
   mutate(lag_confirmed = lag(confirmed),
          daily_confirmed = confirmed - lag_confirmed,
          lag_deaths = lag(deaths),
          daily_deaths = deaths - lag_deaths,
          lag_recovered = lag(recovered),
          daily_recovered = recovered - lag_recovered) %>%
-  select(country, date, confirmed, daily_confirmed, deaths, daily_deaths, recovered, daily_recovered, soc_dist:gcmr_residential)
+  select(country, date, confirmed, daily_confirmed, deaths, daily_deaths, recovered, daily_recovered, soc_dist:apple_mtr_walking, gcmr_retail_recreation:gcmr_residential)
 ```
 
 
-```{r interactive}
-arg_dt <- arg_data_clean %>%
-  datatable()
+```{r static}
+lm_soc_dist <-  lm(daily_confirmed ~ soc_dist, data = arg_data_clean)
+lm_mov_rest <-  lm(daily_confirmed ~ mov_rest, data = arg_data_clean)
+lm_pub_health <-  lm(daily_confirmed ~ pub_health, data = arg_data_clean)
+lm_gov_soc_econ <-  lm(daily_confirmed ~ gov_soc_econ, data = arg_data_clean)
+lm_lockdown <- lm(daily_confirmed ~ lockdown, data = arg_data_clean)
 
-arg_dt
+lm_tidy <- bind_rows(tidy(lm_soc_dist),
+          tidy(lm_mov_rest),
+          tidy(lm_pub_health),
+          tidy(lm_gov_soc_econ),
+          tidy(lm_lockdown)) %>%
+  filter(term != "(Intercept)")
+
+
+lm_glance <- bind_rows(glance(lm_soc_dist),
+          glance(lm_mov_rest),
+          glance(lm_pub_health),
+          glance(lm_gov_soc_econ),
+          glance(lm_lockdown))
+
+
+
+lm_table <- bind_cols(lm_tidy, 
+          lm_glance) %>%
+  select(term, estimate, r.squared, "p value" = p.value...5)
+
+
+lm_table %>% 
+  kable(caption = "Model comparisons for protective health measures", 
+        format.args = list(digits = 2)) %>%
+  kable_styling(bootstrap_options = c("bordered","striped", "hover")) %>%
+  cell_spec(color = ifelse(lm_table$estimate < 0, "green", "red"))
 ```
+
