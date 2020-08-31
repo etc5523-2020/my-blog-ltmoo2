@@ -14,6 +14,7 @@ output:
 
 ## Data Description
 ```{r setup, include=FALSE}
+#install_github("joachim-gassen/tidycovid19")
 library(tidyverse)
 library(tidycovid19)
 library(zoo)
@@ -22,6 +23,9 @@ library(kableExtra)
 library(DT)
 library(broom)
 library(sparkline)
+library(devtools)
+
+
 knitr::opts_chunk$set(echo = FALSE, message = FALSE)
 sparkline(0)
 ```
@@ -45,16 +49,34 @@ arg_data_clean <- arg_data %>%
 
 ```{r inteactive}
 spk_test <- data.frame(
-  var = ("walk"),
-  sparkline = spk_chr(arg_data$apple_mtr_walking)
-)
+  measure = c("driving","walking", "retail/recreation", "grocery/pharmacy", "parks", "transit/stations", "workplaces", "residential"),
+  sparkline = c(spk_chr(arg_data$apple_mtr_driving),
+  spk_chr(arg_data$apple_mtr_walking),
+  spk_chr(arg_data$gcmr_retail_recreation),
+  spk_chr(arg_data$gcmr_grocery_pharmacy),
+  spk_chr(arg_data$gcmr_parks),
+  spk_chr(arg_data$gcmr_transit_stations),
+  spk_chr(arg_data$gcmr_workplaces),
+  spk_chr(arg_data$gcmr_residential)
+))
 
-arg_data_test <- arg_data_clean %>%
-  summarise(walk = mean(apple_mtr_walking, na.rm = TRUE))
+spk_test  <- spk_test %>%
+  arrange(measure)
 
+test2 <- arg_data_clean %>%
+  select(driving = apple_mtr_driving,
+         walking = apple_mtr_walking,
+         "grocery/pharmacy" = gcmr_grocery_pharmacy,
+         parks = gcmr_parks,
+         residential = gcmr_residential,
+         "retail/recreation" = gcmr_retail_recreation,
+         "transit/stations" = gcmr_transit_stations,
+         "workplaces" = gcmr_workplaces) %>%
+  pivot_longer(cols = driving:workplaces, names_to = "measure") %>%
+  group_by(measure) %>%
+  summarise(average = mean(value, na.rm = TRUE))
 
-joint <- bind_cols(arg_data_test, spk_test)
-
+joint <- left_join(test2, spk_test)
 
 datatable(joint, escape = FALSE,
           filter = 'top',
