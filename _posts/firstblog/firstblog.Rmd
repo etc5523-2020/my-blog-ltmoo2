@@ -45,14 +45,18 @@ arg_data_clean <- arg_data %>%
          daily_recovered = recovered - lag_recovered,
          active = confirmed-recovered,
          lag_active = lag(active),
-         daily_active = active - lag_active) %>%
-  select(country, date, confirmed, daily_confirmed, deaths, daily_deaths, recovered, daily_recovered, daily_active, active, soc_dist:apple_mtr_walking, gcmr_retail_recreation:gcmr_residential)
+         daily_active = active - lag_active,
+         proportion_infected = confirmed/population,
+         proportion_killed = deaths/population)
 ```
 
 ```{r interactive1}
 arg_interactive_data <- arg_data_clean %>%
   mutate(apple_mtr_driving = apple_mtr_driving - 100,
-         apple_mtr_walking = apple_mtr_walking - 100)
+         apple_mtr_walking = apple_mtr_walking - 100,
+         proportion_infected = paste(round(100*proportion_infected, digits = 2),"%"),
+         proportion_killed = paste(round(100*proportion_killed, digits = 2),"%")) %>%
+  filter(date != "2020-08-30")
 
 explore <- arg_interactive_data %>%
   select(Date = date,
@@ -63,13 +67,15 @@ explore <- arg_interactive_data %>%
          "Daily Active Cases" = daily_active,
          "Total Active Cases" = active,
          "Daily Deaths" = daily_deaths,
-         "Total Deaths" = deaths)
+         "Total Deaths" = deaths,
+         "Proportion Infected" = proportion_infected,
+         "Proportion Killed" = proportion_killed)
 
 datatable(explore, 
           escape = FALSE,
           filter = 'top',
           caption = htmltools::tags$caption( style = 'caption-side: top; text-align: center; color:black; font-size:200% ;','COVID19 case statistics in Argentina'),
-          options = list(columnDefs = list(list(className = 'dt-right', targets = 2:5)),
+          options = list(columnDefs = list(list(className = 'dt-right', targets = 2:11)),
                          fnDrawCallback = htmlwidgets::JS(
   '
 function(){
