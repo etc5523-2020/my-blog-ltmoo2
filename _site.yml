@@ -1,7 +1,7 @@
-name: "Week 4-distill"
-title: "Week 4 distill blog"
+name: "my-blog-ltmoo2"
+title: "ETC5523 Blog Assignment"
 description: |
-  Week 4 distill blog
+  Blog Posts
 output_dir: "docs"
 navbar:
   right:
