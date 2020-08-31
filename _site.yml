@@ -2,7 +2,7 @@ name: "Week 4-distill"
 title: "Week 4 distill blog"
 description: |
   Week 4 distill blog
-output_dir: "_site"
+output_dir: "docs"
 navbar:
   right:
     - text: "Home"
