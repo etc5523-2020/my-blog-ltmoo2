@@ -77,6 +77,17 @@ arg_data_clean <- arg_data %>%
          proportion_killed = deaths/population)
 ```
 
+Before an evaluation of the various government initiatives can be, it is first prudent to explore the impact of the virus itself on the country.\
+
+The table below provides an opportunity to explore some of the statistics provided in the dataset.\ 
+
+Beginning with the first column, it can be seen that the period of time covered is from the 22nd of January through to the 29th of August. This provides quite a substantial amount of data from which to make inferences.\
+
+The table, being interactive, is able to be sorted and filtered across any column. Beginning on the left hand side, it appears that at its peak Argentina was recording 11,717 cases per day. Perhaps worryingly, all of the largest daily increases have been recorded at the tail end of the data set(as indicated by the row number), indicating that the virus is still not under control in the country.\
+
+Moving along to the next column, sorting by 'Total Confirmed Cases', at the last recorded date, Argentina had over 400,000 confirmed infections. While a large number, when comparing it to the 'Proportion Infected' further to the right, it is notable that this is still only 0.89% of the population.\
+
+Further down the table to the right, it also can be seen that the most number of deaths recorded for a single day was 381 and the total amount of deaths is 8,353, when sorting by 'Daily Deaths' and 'Total Deaths' respectively. Similarly to the daily case numbers, many of the higher daily death counts are during the more recent dates in the data set.\
 
 ```{r interactive1}
 arg_interactive_data <- arg_data_clean %>%
