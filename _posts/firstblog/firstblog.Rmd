@@ -123,9 +123,14 @@ function(){
        )) %>%
   spk_add_deps() 
 ```
+\
+Now that an understanding of the current situation has been gathered, the next stage is to analyse how the movements of Argentina's population has changed during this time. This will be accomplished using the Apple Maps data and Google Community Mobility Reports provided by the data package.\
 
+Argentina's government acted much faster than its neighbors when news of the disease was still emerging, implementing "one of the strictest quarantines" in the region with only 128 active cases  which resulted in a total economic shutdown of the country[@costabel_2020].\
 
+This impact is quite apparent in the 'Trend' section of the table below, which measures the change in traffic over time, with all measures recording a steep drop off in recorded traffic except for residential which saw the inverse. This reflects the situation in the country as most people were confined to their homes. As restrictions begun to ease over time, the trend lines are slowly returning to normal levels.\
 
+Sorting the table by 'Average Change', it appears that the worst affected area was visitation to parks with most measures seeing a more than 40% decrease in traffic. Residential traffic on the other hand was the only one to experience an increase (this pattern is reflected by the graphs). Perhaps unsurprisingly, excluding residential, grocery and pharmacy traffic was the least effected. This is most likely because, similarly to Australia, essential services, such as pharmacies and drugstores, were some of the only business allowed to be open[@costabel_2020].
 
 ```{r inteactive2}
 spk_test <- data.frame(
