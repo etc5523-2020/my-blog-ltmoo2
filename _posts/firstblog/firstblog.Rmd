@@ -13,11 +13,14 @@ output:
     self_contained: false
 bibliography: biblio.bib
 ---
+COVID-19 has been the topic of much discussion and interest over the course of 2020. Argentina has been no different with many neighboring South American countries suffering greatly at the hands of the virus. This blog post will explore the current situation in the country, and in particular how the national government has tackled this global pandemic.\  
 
-THis is a test citation [@covid].
+While some reports have labeled their public health measures as “harsh” during a time where the country was already in economic trouble[@costabel_2020], ultimately its effect on reducing the spread of the virus requires further evaluation to weigh up the benefits of such an approach.
+
 
 ## Data Description
 ```{r setup, include=FALSE}
+library(devtools)
 #install_github("joachim-gassen/tidycovid19")
 library(tidyverse)
 library(tidycovid19)
@@ -27,12 +30,14 @@ library(kableExtra)
 library(DT)
 library(broom)
 library(sparkline)
-library(devtools)
+
 
 
 knitr::opts_chunk$set(echo = FALSE, message = FALSE)
 sparkline(0)
 ```
+
+To examine this subject in depth, the *tidycovid19* package has been downloaded from GitHub[@covid] directly into R using the *devtools* package[@dev]
 
 ## Data Story
 ```{r data, include = FALSE}
