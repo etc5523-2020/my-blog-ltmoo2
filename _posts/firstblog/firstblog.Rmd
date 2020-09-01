@@ -2,6 +2,7 @@
 title: "Blog Post 1"
 description: |
   This blog post explores the impact of COVID-19 in Argentina. In particular, the various protective health measures introduced by the government will be evaluated based on their ability to effectively reduce people's movements and ultimately stop the spread of the virus.
+preview: images/argentina-flag.jpg
 author:
   - name: Lachlan Moody 
     affiliation: Monash University
@@ -10,7 +11,10 @@ date: 08-27-2020
 output:
   distill::distill_article:
     self_contained: false
+bibliography: biblio.bib
 ---
+
+THis is a test citation [@covid].
 
 ## Data Description
 ```{r setup, include=FALSE}
