@@ -37,7 +37,28 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE)
 sparkline(0)
 ```
 
-To examine this subject in depth, the *tidycovid19* package has been downloaded from GitHub[@covid] directly into R using the *devtools* package[@dev]
+To examine this subject in depth, the *tidycovid19* package [@covid] has been downloaded directly into R using the *devtools* package[@dev].\
+
+The raw data files are provided in the GitHub repository joachim-gassen/tidycovid19[@git], and contains information collected from various sources such as Johns Hopkins University (JHU), the European Centre for Disease Prevention and Control, Apple Maps & Google Community Mobility Reports.\  
+
+Observations are recorded at the country level for each day from the 31st of December 2019 up until the current day (the package is updates as information is released). In total, the downloaded dataset has 35 different variables each pertaining to different aspects of the virus, however for the proceeding analysis the following variables have been selected:\  
+
+- country: name of country\
+- date: calendar date\
+- confirmed: confirmed Covid-19 cases as per JHU\
+- deaths: confirmed Covid-19 deaths as per JHU\
+- recovered: confirmed Covid-19 recoveries as per JHU\
+- apple_mtr_driving: Apple Maps usage for driving directions, as percentage relative to the baseline of Jan 13, 2020\
+- apple_mtr_walking: Apple Maps usage for walking directions, as percentage relative to the baseline of Jan 13, 2020\
+- gcmr_grocery_pharmacy: Google Community Mobility Reports data for the frequency that people visit grocery stores and pharmacies expressed as a percentage change relative to the baseline period Jan 3 - Feb 6, 2020\
+- gcmr_parks: Google Community Mobility Reports data for the frequency that people visit parks expressed as a percentage change relative to the baseline period Jan 3 - Feb 6, 2020\
+- gcmr_residential: Google Community Mobility Reports data for the frequency that people visit residential places expressed as a percentage change relative to the baseline period Jan 3 - Feb 6, 2020\
+- gcmr_retail_recreation: Google Community Mobility Reports data for the frequency that people visit retail and recreation places expressed as a percentage change relative to the baseline period Jan 3 - Feb 6, 2020\
+- gcmr_transit_stations: Google Community Mobility Reports data for the frequency that people visit transit stations expressed as a percentage change relative to the baseline period Jan 3 - Feb 6, 2020\
+- gcmr_workplaces: Google Community Mobility Reports data for the frequency that people visit workplaces expressed as a percentage change relative to the baseline period Jan 3 - Feb 6, 2020 \
+
+Once read into R, the Apple Maps usage data were converted from a relative percentage to a relative percentage change to match the Google data and a proportion of the country’s population infected and killed by the virus was calculated. Additionally, daily counts were constructed for each of the ‘confirmed’, ‘deaths’ and ‘recovered’ variables. The new variables were produced and added to the provided data using the *dplyr* package[@dplyr].
+
 
 ## Data Story
 ```{r data, include = FALSE}
@@ -52,12 +73,10 @@ arg_data_clean <- arg_data %>%
          daily_deaths = deaths - lag_deaths,
          lag_recovered = lag(recovered),
          daily_recovered = recovered - lag_recovered,
-         active = confirmed-recovered,
-         lag_active = lag(active),
-         daily_active = active - lag_active,
          proportion_infected = confirmed/population,
          proportion_killed = deaths/population)
 ```
+
 
 ```{r interactive1}
 arg_interactive_data <- arg_data_clean %>%
@@ -65,16 +84,14 @@ arg_interactive_data <- arg_data_clean %>%
          apple_mtr_walking = apple_mtr_walking - 100,
          proportion_infected = paste(round(100*proportion_infected, digits = 2),"%"),
          proportion_killed = paste(round(100*proportion_killed, digits = 2),"%")) %>%
-  filter(date != "2020-08-30")
+  filter(date < "2020-08-30")
 
 explore <- arg_interactive_data %>%
   select(Date = date,
          "Daily Confirmed Cases" = daily_confirmed,
          "Total Confirmed Cases" = confirmed,
-         "Daily Recoveries" = recovered,
-         "Total Recoveries" = daily_recovered,
-         "Daily Active Cases" = daily_active,
-         "Total Active Cases" = active,
+         "Daily Recoveries" = daily_recovered,
+         "Total Recoveries" = recovered,
          "Daily Deaths" = daily_deaths,
          "Total Deaths" = deaths,
          "Proportion Infected" = proportion_infected,
@@ -84,7 +101,7 @@ datatable(explore,
           escape = FALSE,
           filter = 'top',
           caption = htmltools::tags$caption( style = 'caption-side: top; text-align: center; color:black; font-size:200% ;','COVID19 case statistics in Argentina'),
-          options = list(columnDefs = list(list(className = 'dt-right', targets = 2:11)),
+          options = list(columnDefs = list(list(className = 'dt-right', targets = 2:9)),
                          fnDrawCallback = htmlwidgets::JS(
   '
 function(){
