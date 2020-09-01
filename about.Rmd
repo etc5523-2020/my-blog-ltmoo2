@@ -1,9 +1,16 @@
 ---
 title: "About this blog"
-description: |
-  Some additional details about the blog
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
+
+# Blog Information
+This blog was constructed as part off the ETC5523 blog assignment for Semester 2, 2020.\
+The purpose of this blog is to explore COVID19 related data in biweekly installments and to gain experience with the R programming language to communicate with data and produce websites.
+
+# Contact Information
+Name: Lachlan Moody\
+Student Number: 27809951\
+Email Address: ltmoo2@student.monash.edu

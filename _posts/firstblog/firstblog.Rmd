@@ -4,7 +4,7 @@ description: |
   This blog post explores the impact of COVID-19 in Argentina. In particular, the various protective health measures introduced by the government will be evaluated based on their ability to effectively reduce people's movements and ultimately stop the spread of the virus.
 preview: images/argentina-flag.jpg
 author:
-  - name: Lachlan Moody 
+  - name: Lachlan Moody 27809951
     affiliation: Monash University
     affiliation_url: https://www.monash.edu/
 date: 08-27-2020
