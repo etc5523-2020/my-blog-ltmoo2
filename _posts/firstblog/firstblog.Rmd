@@ -48,6 +48,11 @@ Observations are recorded at the country level for each day from the 31st of Dec
 - confirmed: confirmed Covid-19 cases as per JHU\
 - deaths: confirmed Covid-19 deaths as per JHU\
 - recovered: confirmed Covid-19 recoveries as per JHU\
+- soc_dist: net number of social distancing measures\
+- mov_rest: net number of movement restrictions\
+- pub_health: net number of public health measures\
+- gov_soc_econ: net number of social and economic measures\
+- lockdown: net number of lockdown measures\
 - apple_mtr_driving: Apple Maps usage for driving directions, as percentage relative to the baseline of Jan 13, 2020\
 - apple_mtr_walking: Apple Maps usage for walking directions, as percentage relative to the baseline of Jan 13, 2020\
 - gcmr_grocery_pharmacy: Google Community Mobility Reports data for the frequency that people visit grocery stores and pharmacies expressed as a percentage change relative to the baseline period Jan 3 - Feb 6, 2020\
@@ -189,7 +194,11 @@ function(){
        )) %>%
   spk_add_deps() 
 ```
+So while it appears that the government has effectively reduced people's movements throughout the country, the real question is if it has had any effect on the spread of the virus.\
 
+According to the Australian Government (and many prevailing health bodies around the world), COVID19 spreads in one of three ways; either through close contact with an infectious person, contact with water droplets from an infected person or touching objects that have droplets from an infected person[@aus].\
+
+Thus the prevailing thought is that limiting people to essential contact only will limit the likelihood of them contacting the virus. The data provided divides such measures into 5 categories; social distancing measures, movement restrictions, public health measures, social/economic measures and lockdowns, providing current number of each in place. These measures have been used to construct 5 separate linear models, using the counts as an explanatory variable for the number of cases. The table below provides the resulting model statistics.
 
 
 ```{r static}
@@ -241,4 +250,12 @@ lm_table_final
 
 
 ```
+There are several key observations that can be made from this table. Firstly, the estimate tells us how much of an effect each one unit increase in the measure had on the daily number of cases. As the goal is to reduce this number, lower numbers are better. Taking this column in isolation, it would social distancing had the only impact on actually reducing the number of daily cases. However, when moving to the second column, it can be seen that the r squared value is extremely low, indicating that this model does not have much explanatory power. Furthermore, the p value is above the required significance level of 0.05 indicating that there is not enough evidence to state that this measure has an effect.\
 
+So are none of the measures effective then?\
+
+Perhaps not, because there is an important factor to consider. As the number of daily cases increases, naturally the government will respond by instituting more measures. So with that in mind, it may be that social/economic measures and movement restrictions are the most effective measures.\
+
+Beginning with social/economic measures, it has the lowest of the remaining estimates and a p value below 0.05, meaning the measure had a significant effect. While the r squared is one of the lower values at 0.36, this is still quite good for data off this scale. This indicates that 36% of the change in daily cases can be explained by the number of social/economic measures in place. This is quite an interesting find, as while not a direct restriction on movement, it perhaps is effective as it provides an incentive or ability for people to remain home. This however is out of the scope of this blog post.\
+
+Finally, movement restrictions had the next lower estimate and also a p value below the 0.05 cutoff. This is perhaps more expected as the key to stopping the virus spreading is to stop movement. This is reflected in a r squared value more than double that of social/economic measures at 0.68. 
