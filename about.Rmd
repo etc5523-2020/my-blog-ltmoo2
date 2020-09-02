@@ -13,4 +13,5 @@ The purpose of this blog is to explore COVID19 related data in biweekly installm
 # Contact Information
 Name: Lachlan Moody\
 Student Number: 27809951\
-Email Address: ltmoo2@student.monash.edu
+Email Address: ltmoo2@student.monash.edu\
+Github Repository: https://github.com/etc5523-2020/my-blog-ltmoo2
