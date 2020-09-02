@@ -1,0 +1,38 @@
+.distill-site-nav {
+  color: #ffffff;
+  background-color: #006DAE;
+  font-size: 20px;
+}
+
+.distill-site-nav a:hover {
+  color: #ffffff;
+}
+
+
+.distill-site-header {
+    height: 65px;
+}
+
+.distill-site-header .title {
+    font-size: 30px;
+    padding-top: 17px;
+}
+
+h2 {
+  color: #006DAE;
+}
+
+.d-title {
+  text-align: center;
+}
+
+.dt-right {
+  margin: auto;
+}
+
+.dataTables_wrapper .dataTables_filter {
+    float: right;
+    text-align: right;
+    visibility: hidden;
+}
+

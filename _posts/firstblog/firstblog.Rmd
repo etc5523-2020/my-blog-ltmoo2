@@ -1,7 +1,7 @@
 ---
 title: "Blog Post 1"
 description: |
-  This blog post explores the impact of COVID-19 in Argentina. In particular, the various protective health measures introduced by the government will be evaluated based on their ability to effectively reduce people's movements and ultimately stop the spread of the virus.
+  This blog post explores the impact of COVID-19 in Argentina. In particular, the various protective health measures introduced by the government will be evaluated on their ability to reduce people's movements and ultimately stop the spread of the virus.
 preview: images/argentina-flag.jpg
 author:
   - name: Lachlan Moody 27809951
@@ -116,7 +116,7 @@ explore <- arg_interactive_data %>%
 datatable(explore, 
           escape = FALSE,
           filter = 'top',
-          caption = htmltools::tags$caption( style = 'caption-side: top; text-align: center; color:black; font-size:200% ;','COVID19 case statistics in Argentina'),
+          caption = htmltools::tags$caption( style = 'caption-side: top; text-align: center; color:#006DAE; padding-bottom: 10px; font-size:200% ;','COVID19 case statistics in Argentina'),
           options = list(columnDefs = list(list(className = 'dt-right', targets = 2:9)),
                          fnDrawCallback = htmlwidgets::JS(
   '
@@ -181,7 +181,7 @@ joint <- left_join(test2, spk_test)
 datatable(joint, 
           escape = FALSE,
           filter = 'top',
-          caption = htmltools::tags$caption( style = 'caption-side: top; text-align: center; color:black; font-size:200% ;','Effect of COVID 19 on public movement'),
+          caption = htmltools::tags$caption( style = 'caption-side: top; text-align: center; color:#006DAE; padding-bottom: 10px; font-size:200% ;','Effect of COVID 19 on public movement'),
           options = list(paging = FALSE, 
                          columnDefs = list(list(className = 'dt-right', targets = 2:5)),
                          fnDrawCallback = htmlwidgets::JS(
@@ -250,12 +250,46 @@ lm_table_final
 
 
 ```
-There are several key observations that can be made from this table. Firstly, the estimate tells us how much of an effect each one unit increase in the measure had on the daily number of cases. As the goal is to reduce this number, lower numbers are better. Taking this column in isolation, it would social distancing had the only impact on actually reducing the number of daily cases. However, when moving to the second column, it can be seen that the r squared value is extremely low, indicating that this model does not have much explanatory power. Furthermore, the p value is above the required significance level of 0.05 indicating that there is not enough evidence to state that this measure has an effect.\
+There are several key observations that can be made from this table. Firstly, the estimate tells us how much of an effect each one unit increase in the measure had on the daily number of cases. As the goal is to reduce this number, lower numbers are better. Taking this column in isolation, it would social distancing had the only impact on actually reducing the number of daily cases. 
+
+<aside>
+```{r}
+arg_data_clean %>%
+  ggplot(aes(x = soc_dist, y = daily_confirmed)) +
+  geom_smooth(method = "lm") +
+  labs(x = "", y = "")
+```
+Effect of social distancing on daily cases
+</aside>
+
+However, when moving to the second column, it can be seen that the r squared value is extremely low, indicating that this model does not have much explanatory power. Furthermore, the p value is above the required significance level of 0.05 indicating that there is not enough evidence to state that this measure has an effect.\
 
 So are none of the measures effective then?\
 
 Perhaps not, because there is an important factor to consider. As the number of daily cases increases, naturally the government will respond by instituting more measures. So with that in mind, it may be that social/economic measures and movement restrictions are the most effective measures.\
 
-Beginning with social/economic measures, it has the lowest of the remaining estimates and a p value below 0.05, meaning the measure had a significant effect. While the r squared is one of the lower values at 0.36, this is still quite good for data off this scale. This indicates that 36% of the change in daily cases can be explained by the number of social/economic measures in place. This is quite an interesting find, as while not a direct restriction on movement, it perhaps is effective as it provides an incentive or ability for people to remain home. This however is out of the scope of this blog post.\
+Beginning with social/economic measures, it has the lowest of the remaining estimates and a p value below 0.05, meaning the measure had a significant effect. While the r squared is one of the lower values at 0.36, this is still quite good for data off this scale. This indicates that 36% of the change in daily cases can be explained by the number of social/economic measures in place. 
+
+<aside>
+```{r}
+arg_data_clean %>%
+  ggplot(aes(x = gov_soc_econ, y = daily_confirmed)) +
+  geom_smooth(method = "lm") +
+  labs(x = "", y = "")
+```
+Effect of government social and economic measures on daily cases
+</aside>
+
+This is quite an interesting find, as while not a direct restriction on movement, it perhaps is effective as it provides an incentive or ability for people to remain home. This however is out of the scope of this blog post.\
 
 Finally, movement restrictions had the next lower estimate and also a p value below the 0.05 cutoff. This is perhaps more expected as the key to stopping the virus spreading is to stop movement. This is reflected in a r squared value more than double that of social/economic measures at 0.68. 
+
+<aside>
+```{r}
+arg_data_clean %>%
+  ggplot(aes(x = mov_rest, y = daily_confirmed)) +
+  geom_smooth(method = "lm") +
+  labs(x = "", y = "")
+```
+Effect of movement restrictions on daily cases
+</aside>
