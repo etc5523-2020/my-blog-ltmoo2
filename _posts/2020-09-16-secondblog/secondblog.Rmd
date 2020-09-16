@@ -22,6 +22,8 @@ library(tidycovid19)
 library(ggplot2)
 library(leaflet)
 library(maps)
+library(plotly)
+library(lubridate)
 ```
 
 ## Data Description
@@ -69,6 +71,41 @@ leaflet(world_map) %>%
   setView(-60, -30, zoom = 2)
 ```
 
+```{r bar}
+top10 <- south_america %>%
+  arrange(-Total_Cases) %>%
+  top_n(8) %>%
+  select(country)
+
+bar_data <- tidycovid %>%
+  filter(country %in% top10$country)%>%
+  mutate(date = format(date), "%Y-%m-%d") %>%
+  mutate(country = as.factor(country)) %>%
+  mutate(country = fct_rev(country))
+
+  
+bar_data %>%
+  plot_ly(
+    y = ~country,
+    x = ~confirmed,
+    frame = ~date,
+    type = 'bar',
+    color = ~country
+  ) %>%
+  layout(title = "Change in COVID19 cases over time",
+         yaxis = list(title = ""),
+         xaxis = list(title = "Total Confirmed Cases"),
+         showlegend = FALSE) %>%
+  animation_opts(frame = 1) %>%
+  animation_button(x = 1, 
+                   xanchor = "right", 
+                   y = 0, 
+                   yanchor = "bottom") %>%
+  animation_slider(currentvalue = list(prefix = "Date: ", 
+                                       font =list(color="red")))
+
+
+```
 
 ## Data Story 2: Spread of COVID19 in Brazil 
 
