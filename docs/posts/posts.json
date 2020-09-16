@@ -2,7 +2,7 @@
   {
     "path": "posts/2020-09-16-secondblog/",
     "title": "Blog Post 2",
-    "description": "A short description of the post.",
+    "description": "This blog post explores how COVID-19 has spread in South America. Following this initial exploration, a deeper analysis of the region's hardest hittest country, Brazil, observes how the virus has impacted different areas of the nation.",
     "author": [
       {
         "name": "Lachlan Moody 27809951",
@@ -12,7 +12,7 @@
     "date": "2020-09-16",
     "categories": [],
     "preview": "posts/2020-09-16-secondblog/images/brazil-flag-waving-mast.jpg",
-    "last_modified": "2020-09-16T15:38:27+10:00",
+    "last_modified": "2020-09-16T19:02:04+10:00",
     "input_file": "secondblog.utf8.md"
   },
   {
@@ -28,7 +28,7 @@
     "date": "2020-08-27",
     "categories": [],
     "preview": "posts/firstblog/images/argentina-flag.jpg",
-    "last_modified": "2020-09-16T13:03:33+10:00",
+    "last_modified": "2020-09-02T14:03:22+10:00",
     "input_file": {}
   }
 ]

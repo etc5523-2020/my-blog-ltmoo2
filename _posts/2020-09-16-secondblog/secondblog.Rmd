@@ -1,7 +1,7 @@
 ---
 title: "Blog Post 2"
 description: |
-  A short description of the post.
+  This blog post explores how COVID-19 has spread in South America. Following this initial exploration, a deeper analysis of the region's hardest hittest country, Brazil, observes how the virus has impacted different areas of the nation.
 preview: images/brazil-flag-waving-mast.jpg
 author:
   - name: Lachlan Moody 27809951
@@ -24,6 +24,7 @@ library(leaflet)
 library(maps)
 library(plotly)
 library(lubridate)
+library(gganimate)
 ```
 
 ## Data Description
@@ -71,7 +72,7 @@ leaflet(world_map) %>%
   setView(-60, -30, zoom = 2)
 ```
 
-```{r bar}
+```{r bar, cache=TRUE}
 top10 <- south_america %>%
   arrange(-Total_Cases) %>%
   top_n(8) %>%
@@ -107,5 +108,81 @@ bar_data %>%
 
 ```
 
+
 ## Data Story 2: Spread of COVID19 in Brazil 
+```{r brazil, cache=TRUE}
+#https://github.com/wcota/covid19br
+
+cases <- read_csv("data/cases-brazil-cities-time.csv")
+
+cities <- read_csv("data/cities_info.csv")
+
+gps <- read_csv("data/gps_cities.csv")
+
+
+brazil_data <- left_join(cases, gps, by = "ibgeID") %>%
+  left_join(cities, by = c("ibgeID" = "ibge")) %>%
+  filter(state.x != "TOTAL") %>%
+  filter(!is.na(lat))
+```
+
+```{r map}
+func = colorNumeric(palette = "Dark2", domain = brazil_data$isCountryside)
+
+brazil_data %>%
+  filter(date == max(date)) %>%
+  leaflet() %>%
+  addTiles() %>%
+  addCircleMarkers(~lon,
+                   ~lat,
+                   radius = ~totalCases/10000,
+                   color = ~func(isCountryside))
+```
+
+```{r anim, cache=TRUE}
+state <- brazil_data %>%
+  group_by(state.x, date) %>%
+  summarise(avg = sum(totalCases)) %>%
+  ggplot(aes(x = avg, y = reorder(state.x, avg))) +
+  geom_col(colour = "light blue", fill = "light blue") +
+  transition_time(date) +
+  theme_bw() +
+  labs(x = "Total Cases", 
+       y = "State",
+       title = "COVID19 cases in Brazil per state as at: {frame_time}") +
+  scale_x_continuous(labels = scales::comma)
+
+state
+```
+
+
+```{r DF}
+ovr_date <- brazil_data %>%
+  group_by(date) %>%
+  summarise(total = sum(totalCases)) %>%
+  mutate(source = "Brazil")
+
+SP_date <- brazil_data %>%
+  filter(state.x == "SP") %>%
+  group_by(date) %>%
+  summarise(total = sum(totalCases)) %>%
+  mutate(source = "SP")
+
+combined_plot <- combined %>%
+  ggplot() +
+  geom_line(data = ovr_date, aes(x = date, y = total, colour = "#1b9e77")) +
+  geom_line(data = SP_date, aes(x = date, y = total, colour = "#d95f02")) +
+  geom_text(aes(x = max(date) + 25, y = max(total)), label = "Overall cases", colour = "#d95f02") +
+  geom_text(aes(x = max(date) + 25, y = 900000), label = "SP cases", colour = "#1b9e77") +
+  labs(x = "Date",
+       y = "Total cases") +
+  theme_bw() +
+  theme(legend.position = "none") +
+  scale_y_continuous(labels = scales::comma) +
+  scale_x_date(limits = as.Date(c("2020-02-25", "2020-10-30"))) +
+  ggtitle("Time series of total cases in Brazil and SP")
+
+ggplotly(combined_plot) %>%
+  config(displayModeBar = FALSE)
+```
 
