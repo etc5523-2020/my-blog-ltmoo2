@@ -133,10 +133,11 @@ brazil_data %>%
   filter(date == max(date)) %>%
   leaflet() %>%
   addTiles() %>%
-  addCircleMarkers(~lon,
+  addCircles(~lon,
                    ~lat,
-                   radius = ~totalCases/10000,
-                   color = ~func(isCountryside))
+                   radius = ~totalCases,
+                   color = ~func(isCountryside),
+             popup = ~city.x)
 ```
 
 ```{r anim, cache=TRUE}
@@ -168,12 +169,12 @@ SP_date <- brazil_data %>%
   summarise(total = sum(totalCases)) %>%
   mutate(source = "SP")
 
-combined_plot <- combined %>%
+combined_plot <- 
   ggplot() +
   geom_line(data = ovr_date, aes(x = date, y = total, colour = "#1b9e77")) +
   geom_line(data = SP_date, aes(x = date, y = total, colour = "#d95f02")) +
-  geom_text(aes(x = max(date) + 25, y = max(total)), label = "Overall cases", colour = "#d95f02") +
-  geom_text(aes(x = max(date) + 25, y = 900000), label = "SP cases", colour = "#1b9e77") +
+  geom_text(data = ovr_date, aes(x = max(date) + 25, y = max(total)), label = "Overall cases", colour = "#d95f02") +
+  geom_text(data = SP_date, aes(x = max(date) + 25, y = max(total)), label = "SP cases", colour = "#1b9e77") +
   labs(x = "Date",
        y = "Total cases") +
   theme_bw() +
