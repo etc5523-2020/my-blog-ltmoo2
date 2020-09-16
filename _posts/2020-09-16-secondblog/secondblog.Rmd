@@ -16,10 +16,59 @@ bibliography: biblio.bib
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+
+library(tidyverse)
+library(tidycovid19)
+library(ggplot2)
+library(leaflet)
+library(maps)
 ```
 
 ## Data Description
 
 
-## Data Story
+## Data Story 1: Spread of COVID19 in South America
+```{r regionmap}
+tidycovid <- download_merged_data(silent = TRUE, cached = TRUE)
+
+south_america <- tidycovid %>%
+  filter(region == "Latin America & Caribbean ") %>%
+  group_by(country) %>%
+  filter(!is.na(confirmed)) %>%
+  summarise(Total_Cases = max(confirmed, na.rm = TRUE),
+            population = max(population)) %>%
+  mutate(prop = Total_Cases/population*100)
+
+world_map <- map("world", fill = TRUE, plot = FALSE)
+
+cases <- south_america$Total_Cases[match(world_map$names, south_america$country)]
+
+cpal <- colorNumeric("Reds", cases)
+
+leaflet(world_map) %>%
+  addProviderTiles("CartoDB.DarkMatter") %>%
+  addPolygons(stroke = FALSE,
+              smoothFactor = 0.2,
+              fillOpacity = 1,color = ~cpal(cases),
+              label = paste0(world_map$names, ": ", format(cases, big.mark = ","), " cases")) %>%
+  setView(-60, -30, zoom = 2)
+```
+
+```{r prop}
+prop <- south_america$prop[match(world_map$names, south_america$country)]
+
+cpal2 <- colorNumeric("Reds", prop)
+
+leaflet(world_map) %>%
+  addProviderTiles("CartoDB.DarkMatter") %>%
+  addPolygons(stroke = FALSE,
+              smoothFactor = 0.2,
+              fillOpacity = 1,
+              color = ~cpal2(prop),
+              label = paste0(world_map$names, ": ", round(prop, digits = 2), "% infected")) %>%
+  setView(-60, -30, zoom = 2)
+```
+
+
+## Data Story 2: Spread of COVID19 in Brazil 
 
