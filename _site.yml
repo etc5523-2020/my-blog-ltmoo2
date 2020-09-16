@@ -11,6 +11,8 @@ navbar:
       menu:
         - text: "Blog 1"
           href: posts/firstblog/index.html
+        - text: "Blog 2"
+          href: posts/2020-09-16-secondblog/index.html
     - text: "About"
       href: about.html
     - text: "Github"

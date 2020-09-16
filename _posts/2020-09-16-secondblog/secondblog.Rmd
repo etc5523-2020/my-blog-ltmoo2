@@ -1,0 +1,25 @@
+---
+title: "Blog Post 2"
+description: |
+  A short description of the post.
+preview: images/brazil-flag-waving-mast.jpg
+author:
+  - name: Lachlan Moody 27809951
+    affiliation: Monash University
+    affiliation_url: https://www.monash.edu/
+date: 09-16-2020
+output:
+  distill::distill_article:
+    self_contained: false
+bibliography: biblio.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Data Description
+
+
+## Data Story
+

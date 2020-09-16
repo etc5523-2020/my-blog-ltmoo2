@@ -1,5 +1,21 @@
 [
   {
+    "path": "posts/2020-09-16-secondblog/",
+    "title": "Blog Post 2",
+    "description": "A short description of the post.",
+    "author": [
+      {
+        "name": "Lachlan Moody 27809951",
+        "url": {}
+      }
+    ],
+    "date": "2020-09-16",
+    "categories": [],
+    "preview": "posts/2020-09-16-secondblog/images/brazil-flag-waving-mast.jpg",
+    "last_modified": "2020-09-16T13:13:20+10:00",
+    "input_file": "secondblog.utf8.md"
+  },
+  {
     "path": "posts/firstblog/",
     "title": "Blog Post 1",
     "description": "This blog post explores the impact of COVID-19 in Argentina. In particular, the various protective health measures introduced by the government will be evaluated on their ability to reduce people's movements and ultimately stop the spread of the virus.",
@@ -12,7 +28,7 @@
     "date": "2020-08-27",
     "categories": [],
     "preview": "posts/firstblog/images/argentina-flag.jpg",
-    "last_modified": "2020-09-02T14:03:22+10:00",
+    "last_modified": "2020-09-16T13:03:33+10:00",
     "input_file": {}
   }
 ]
