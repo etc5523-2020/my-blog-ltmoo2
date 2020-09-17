@@ -160,17 +160,20 @@ state
 ```{r DF}
 ovr_date <- brazil_data %>%
   group_by(date) %>%
-  summarise(total = sum(totalCases)) %>%
-  mutate(source = "Brazil")
+  summarise(total = sum(totalCases))
+
+region_date <- brazil_data %>%
+  group_by(state.x, date) %>%
+  summarise(total = sum(totalCases))
 
 SP_date <- brazil_data %>%
   filter(state.x == "SP") %>%
   group_by(date) %>%
-  summarise(total = sum(totalCases)) %>%
-  mutate(source = "SP")
+  summarise(total = sum(totalCases))
 
 combined_plot <- 
   ggplot() +
+  geom_line(data = region_date, aes(x = date, y = total, group = state.x, colour = "blue")) +
   geom_line(data = ovr_date, aes(x = date, y = total, colour = "#1b9e77")) +
   geom_line(data = SP_date, aes(x = date, y = total, colour = "#d95f02")) +
   geom_text(data = ovr_date, aes(x = max(date) + 25, y = max(total)), label = "Overall cases", colour = "#d95f02") +
@@ -180,7 +183,7 @@ combined_plot <-
   theme_bw() +
   theme(legend.position = "none") +
   scale_y_continuous(labels = scales::comma) +
-  scale_x_date(limits = as.Date(c("2020-02-25", "2020-10-30"))) +
+  scale_x_date(limits = as.Date(c("2020-02-25", "2020-10-20"))) +
   ggtitle("Time series of total cases in Brazil and SP")
 
 ggplotly(combined_plot) %>%
