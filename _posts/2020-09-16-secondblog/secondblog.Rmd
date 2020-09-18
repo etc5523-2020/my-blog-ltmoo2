@@ -25,6 +25,7 @@ library(maps)
 library(plotly)
 library(lubridate)
 library(gganimate)
+library(kableExtra)
 ```
 
 Brazil has unfortunately become one of the major epicenters of the COVID19 pandemic in the world, with the global virus "devastating" the country both economically and on a humanitarian level. This outcome has been blamed on the country's inaction and "institutional paralysis", placed squarely on the head of president Jair Bolsonaro[@brazil].  
@@ -83,7 +84,11 @@ Location data on 5,570 cities in Brazil across the following 5 variables:
 For the purposes of this analysis, the three data sets above were joined using the ibge/ibgeID to link the observations contained within each.
 
 ## Data Story 1: Spread of COVID19 in South America
-```{r regionmap}
+Before the situation within Brazil is analysed, first the claim that the nation is one of the worst hit in the world should be examined.  
+
+Figure \@ref(fig:regionmap) shows the total number of cases for each country in the region, with those experiencing a higher number of cases coloured darker. Brazil immediately stands out in this figure, produced using the R package leaflet[@leaflet], as clearly having been the hardest hit by COVID19. Mousing over the country, it appears that Brazil has recorded over 4.4 million cases of the virus. As indicated by the colour shade, this far exceeds similar sized nations, such as Mexico which has recorded 680,000 cases approximately and Argentina, which was examined last week, having around 590,000 cases. Additionally, it can be seen that the virus is not localised around that particular region of South America as the countries surrounding Brazil such as Bolivia, Paraguay & Venezuela have recorded some of the lowest case numbers.
+
+```{r regionmap, fig.cap="Total number of COVID19 cases in Latin America"}
 tidycovid <- download_merged_data(silent = TRUE, cached = TRUE)
 
 south_america <- tidycovid %>%
@@ -104,12 +109,21 @@ leaflet(world_map) %>%
   addProviderTiles("CartoDB.DarkMatter") %>%
   addPolygons(stroke = FALSE,
               smoothFactor = 0.2,
-              fillOpacity = 1,color = ~cpal(cases),
+              fillOpacity = 1,
+              color = ~cpal(cases),
               label = paste0(world_map$names, ": ", format(cases, big.mark = ","), " cases")) %>%
-  setView(-60, -30, zoom = 2)
+  setView(-60, -30, zoom = 2) %>%
+  addLegend("bottomleft",
+            pal = cpal,
+            values = ~cases,
+            opacity = 1)
 ```
 
-```{r prop}
+It should be noted, however that Brazil has a population of almost 213 million people, ranking it the 6th largest country in the world in terms of population[@worldometer]. This statistic is important to keep in mind especially considering the relative size of the countries surrounding it. Thus, it was decided to explore if this disparity in recorded cases was simply due to population.  
+
+Figure \@ref(fig:prop) repeats the process performed above, except this time taking the total number of cases as a proportion of the overall population, with darker colours indicating a higher infection rate. Looking at Brazil under this method, while its rate is still quite high, (2.09%) it is no longer the highest in the area, with neighbouring countries Peru and Chille recording higher proportions. Zooming in, it is now Panama that appears to have been the worst infected. Nonetheless, Brazil's infection rate is still high enough to warrant further investigation.  
+
+```{r prop, fig.cap="Total number of COVID19 cases as a proportion of population in Latin America"}
 prop <- south_america$prop[match(world_map$names, south_america$country)]
 
 cpal2 <- colorNumeric("Reds", prop)
@@ -121,10 +135,16 @@ leaflet(world_map) %>%
               fillOpacity = 1,
               color = ~cpal2(prop),
               label = paste0(world_map$names, ": ", round(prop, digits = 2), "% infected")) %>%
-  setView(-60, -30, zoom = 2)
+  setView(-60, -30, zoom = 2) %>%
+  addLegend("bottomleft",
+            pal = cpal2,
+            values = ~prop,
+            opacity = 1)
 ```
 
-```{r bar, cache=TRUE}
+To pinpoint exactly when Brazil's case number got out of hand, an animated time series graph was produced using the R package plotly[@plotly] and is shown below in Figure \@ref(fig:bar). This plot shows the total confirmed cases over time for the 8 countries in Latin America with the highest recorded number of cases to date. Playing the animation, or scrolling to the beginning of May, it can be observed that at this point the number of cases in Brazil was still reasonably close to its regional neighbours. However, by the end of the month, the gap between Brazil and the second ranked country, Peru, has significantly widened. From this point onwards, the gap only continues to grow through June, July, August and September to arrive at the 4.4 million cases Brazil has recorded at the time of writing, leading to an uncontrollable pandemic in the country.
+
+```{r bar, cache=TRUE, fig.cap="Total COVID19 cases by date in the 8 countries wiht the most cases in Latin America"}
 top10 <- south_america %>%
   arrange(-Total_Cases) %>%
   top_n(8) %>%
@@ -155,7 +175,8 @@ bar_data %>%
                    y = 0, 
                    yanchor = "bottom") %>%
   animation_slider(currentvalue = list(prefix = "Date: ", 
-                                       font =list(color="red")))
+                                       font =list(color="red")))%>%
+  config(displayModeBar = FALSE)
 
 
 ```
@@ -178,7 +199,11 @@ brazil_data <- left_join(cases, gps, by = "ibgeID") %>%
   filter(!is.na(lat))
 ```
 
-```{r map}
+It has been established that Brazil has been significantly effected by COVID19. However, it is important to understand where these cases are coming from in order to determine how the virus has spread throughout the country.  
+
+In order to address this topic, Figure \@ref(fig:map) was constructed, again using leaflet[@leaflet], and is displayed below. A circle marker has been placed for each city in Brazil, with its size being relative to the total number of cases recorded and its colour representing whether the city is classified as countryside or not. With gray circles for the former and green for the latter. Immediately, it can be seen that the greatest number of cases are not occuring in the countryside but in the cities, with all of the largest circles being coloured green. In particular, there is one in the south-east of the country that stands out. Clicking on this marker, it appears that Sao Paulo has been the worst hit city in the country, accounting for a large number of the cases in the country. Additionally, some of the cities close by, such as Rio de Janeiro, also have quite large markers suggesting that the cases in Brazil may be clustered around this region.
+
+```{r map, fig.cap="Total number of COVID19 cases in Brazil per city, coloured by whether the city is considered as countryside"}
 func = colorNumeric(palette = "Dark2", domain = brazil_data$isCountryside)
 
 brazil_data %>%
@@ -192,7 +217,9 @@ brazil_data %>%
              popup = ~city.x)
 ```
 
-```{r anim, cache=TRUE}
+To see if this was the case, a similar graphic to Figure \@ref(fig:bar) was produced, this time using the R package gganimate[@animate], to compare the spread of cases in Brazil on a state-by-state basis. The resulting output is shown in Figure \@ref(fig:anim). Watching the animation it appears the state 'SP' led the way in total cases from March through to September, with a drastic increase being noticeable from May onward (notice that this reflects the spike in cases seen in Figure \@ref(fig:bar)).
+
+```{r anim, cache=TRUE, fig.cap="Change in total number of COVID19 cases in time by state in Brazil"}
 state <- brazil_data %>%
   group_by(state.x, date) %>%
   summarise(avg = sum(totalCases)) %>%
@@ -207,9 +234,9 @@ state <- brazil_data %>%
 
 state
 ```
+The relative difference between 'SP' and the rest of Brazil can be seen in Figure \@ref(fig:DF) below, with the overall cases in the country included for comparison. As can be clearly seen, the cases in 'SP' now more than double any other state in Brazil, totaling almost 1,000,000 and comprising almost a quarter of overall cases in the country. If the area around April is highlighted, it appears that the increase in the following months recorded in Brazil is followed more closely by 'SP' than any other state, with the rest catching up to the curve in the following months. This is a worring sign as it could suggest that 'SP' acts as a predictor for the rest of the country.
 
-
-```{r DF}
+```{r DF, fig.cap="Comparison of total COVID19 cases over time in Brazil per state to the overall"}
 ovr_date <- brazil_data %>%
   group_by(date) %>%
   summarise(total = sum(totalCases))
@@ -225,7 +252,7 @@ SP_date <- brazil_data %>%
 
 combined_plot <- 
   ggplot() +
-  geom_line(data = region_date, aes(x = date, y = total, group = state.x, colour = "blue")) +
+  geom_line(data = region_date, aes(x = date, y = total, group = state.x), colour = "gray") +
   geom_line(data = ovr_date, aes(x = date, y = total, colour = "#1b9e77")) +
   geom_line(data = SP_date, aes(x = date, y = total, colour = "#d95f02")) +
   geom_text(data = ovr_date, aes(x = max(date) + 25, y = max(total)), label = "Overall cases", colour = "#d95f02") +
@@ -242,7 +269,14 @@ ggplotly(combined_plot) %>%
   config(displayModeBar = FALSE)
 ```
 
-```{r scatter, cache=TRUE, fig.height=10, fig.width=8}
+Additional research uncovered that 'SP' refers to the Brazillian state of Sao Paulo. While only being the 12th largest state in terms of area, it has the highest population, with over 45 million citizens, more than double that of second ranked Minas Gerais (MG) which has more than double the area [@wikipedia_2020].  
+
+This informed the hypothesised relationship made above. To compare what was truly driving COVID19 in Brazil, Figure \@ref(fig:scatter) was produced comparing population on the x-axis against the total number of recorded cases on the y-axis for every city in Brazil, faceted by each state. Additionally, whether the city was classified as a countryside or not was considered important so this variable was mapped to the shape aesthetic.  
+
+Examining the plot below highlighted several important observations. Firstly, the majority of cases in the country are mainly driven by only 4 cities, with the rest clustered together in the low population and low cases area of the plot. Moreso, these 4 cities aren't localised to any single state, being located in 'SP', 'DF', 'RJ' & 'BA' (in descending order) and are not considered countryside cities. Perhaps more worryingly than the cities in 'SP' and 'RJ' which have higher populations, the two in 'BA' and 'DF' in particular have relatively low populations, yet still have cities with a very high number of cases.
+
+
+```{r scatter, cache=TRUE, fig.height=10, fig.width=8, fig.cap = "Total coronavirus cases in Brazil compared to population for each state, with the countryside variable mapped to the shape aesthetic"}
 ovr_cases <- brazil_data %>%
   group_by(city.x) %>%
             summarise(cases = max(totalCases))
@@ -263,3 +297,22 @@ ggplot(scatter_data, aes(x = pop2019, y = cases)) +
   scale_color_discrete(guide = FALSE)
 ```
 
+```{r worry}
+table <- scatter_data %>%
+  filter(state %in% c("BA", "DF")) %>%
+  group_by(state) %>%
+  filter(cases == max(cases)) %>%
+  mutate(Proportion = 100*(cases/pop2019)) %>%
+  select("State" = state,
+    "City" = city,
+         "Population" = pop2019,
+         "Total Cases" = cases,
+    Proportion) %>%
+  mutate(Proportion = paste(round(Proportion, digits = 2), "%"))
+
+table %>%
+  kable(format.args = list(big.mark = ","), caption = "City with highest number of cases in states 'BA' and 'DF'") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "bordered"))
+```
+
+Table \@ref(tab:worry) displays information for these two cities in 'BA' and 'DF' respectively, being Salvador for the former and Brasilia for the latter. While both cities have around 3 million inhabitants, Brasilia has recorded more than double the amount of cases with almost 6% of its population being infected by the potentially deadly virus. This highlights the need for drastic intervention measures in this city in particular.
