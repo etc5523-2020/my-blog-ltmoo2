@@ -27,8 +27,60 @@ library(lubridate)
 library(gganimate)
 ```
 
+Brazil has unfortunately become one of the major epicenters of the COVID19 pandemic in the world, with the global virus "devastating" the country both economically and on a humanitarian level. This outcome has been blamed on the country's inaction and "institutional paralysis", placed squarely on the head of president Jair Bolsonaro[@brazil].  
+
+This blog post will analyse just how poorly Brazil has performed relative to its regional South American neighbours. Once this has been established, the spread of the virus within the country will be mapped out to determine where things got out of control.
+
 ## Data Description
-TEST
+Several different data sets have been used to explore this topic.  
+
+For the first data story, which relates to the spread of COVID19 in South America, the *tidycovid19*[@covid]  package was utilised. This package contains information on COVID19 at the country level for each day from the 31st of December up until the current day, collected and collated from various sources. For a detailed breakdown of this package and the variables included in the data sets, please see [Blog Post 1](https://my-blog-ltmoo2.netlify.app/posts/firstblog/).  
+
+While this data is very useful for comparing the situation between countries, additional information was required to examine the internal situation within Brazil for the second data story. To this end, three data sets provided within the wcota/covid19br[@CotaCovid19br2020] GitHub repository were used, the information for which was downloaded from Brazil's Ministry of Health[@health] and translated into English. The three data sets used were:  
+
+#### cases-brazil-cities-time.csv
+709,775 records for COVID19 case data for Brazil by city and date across the following 17 variables:  
+
+- epi_week: Number of weeks since the epidemic begun\
+- date: Date of data record, from 25/02/20 to 15/09/20\
+- country: Name of country\
+- state: Name of state\
+- city: Name of city\
+- ibgeID: Identification code for city\
+- cod_RegiaoDeSaude: Health region code city is located in\
+- name_RegiaoDeSaude: Health region name city is located in\
+- newDeaths: Number of new deaths for record date\
+- Deaths: Total number of deaths up until record date\
+- newCases: New cases recorded for record date\
+- totalCases: Total number of cases up until record date\
+- deaths_per_100k_inhabitants: Total number of deaths per 100,000 inhabitants at record date\
+- totalCases_per_100k_inhabitants Total number of cases per 100,000 inhabitants at record date\
+- deaths_by_totalCases: Recorded number of deaths divided by the total cases at record date\
+- _source: Source of record information\
+- last_info_date: Last date information was recorded\
+
+#### cities_info.csv
+Data on 5,570 cities in Brazil across the following 8 variables:  
+
+- ibge: Identification code for city\  
+- city: City name\
+- state: State the city is located in\
+- region: Region of country the city is located in\
+- pop2019: Cities population as at 2019\
+- isCountryside: Two level factor recording if city is considered in the countryside or not\
+- cod_RegiaoDeSaude: Health region code city is located in\
+- name_RegiaoDeSaude: Health region name city is located in\
+
+#### gps_cities.csv
+Location data on 5,570 cities in Brazil across the following 5 variables:  
+
+- ibgeID: Identification code for city (akin to ibge)\
+- id: City identifcation name\
+- lat: Latitude of city location\
+- lon: Longitude of city location\
+- longName: Full name of city\
+
+For the purposes of this analysis, the three data sets above were joined using the ibge/ibgeID to link the observations contained within each.
 
 ## Data Story 1: Spread of COVID19 in South America
 ```{r regionmap}
