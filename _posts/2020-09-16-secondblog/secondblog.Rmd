@@ -37,7 +37,7 @@ Several different data sets have been used to explore this topic.
 
 For the first data story, which relates to the spread of COVID19 in South America, the *tidycovid19*[@covid]  package was utilised. This package contains information on COVID19 at the country level for each day from the 31st of December up until the current day, collected and collated from various sources. For a detailed breakdown of this package and the variables included in the data sets, please see [Blog Post 1](https://my-blog-ltmoo2.netlify.app/posts/firstblog/).  
 
-While this data is very useful for comparing the situation between countries, additional information was required to examine the internal situation within Brazil for the second data story. To this end, three data sets provided within the wcota/covid19br[@CotaCovid19br2020] GitHub repository were used, the information for which was downloaded from Brazil's Ministry of Health[@health] and translated into English. The three data sets used were:  
+While this data is very useful for comparing the situation between countries, additional information was required to examine the internal situation within Brazil for the second data story. To this end, three data sets provided within the wcota/covid19br[@CotaCovid19br2020] GitHub repository were used, the information for which was downloaded from [Brazil's Ministry of Health](https://covid.saude.gov.br/) and translated into English. The three data sets used were:  
 
 #### cases-brazil-cities-time.csv
 709,775 records for COVID19 case data for Brazil by city and date across the following 17 variables:  
