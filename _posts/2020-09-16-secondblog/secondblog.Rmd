@@ -28,7 +28,7 @@ library(gganimate)
 ```
 
 ## Data Description
-
+TEST
 
 ## Data Story 1: Spread of COVID19 in South America
 ```{r regionmap}
@@ -188,5 +188,26 @@ combined_plot <-
 
 ggplotly(combined_plot) %>%
   config(displayModeBar = FALSE)
+```
+
+```{r scatter, cache=TRUE, fig.height=10, fig.width=8}
+ovr_cases <- brazil_data %>%
+  group_by(city.x) %>%
+            summarise(cases = max(totalCases))
+
+scatter_data <- cities %>%
+  left_join(ovr_cases, by = c("city" = "city.x")) %>%
+  mutate(isCountryside = as.factor(isCountryside))
+
+ggplot(scatter_data, aes(x = pop2019, y = cases)) +
+  geom_point(data = dplyr::select(scatter_data, -state), color = "gray") +
+  geom_point(aes(colour = state, shape = isCountryside)) +
+  facet_wrap(~state) +
+  theme_bw() +
+  theme(axis.text=element_blank(),
+        axis.ticks=element_blank()) +
+  labs(x = "Population", y = "Total Cases", colour = "", shape = "Countryside") +
+  ggtitle("Total cases against population, faceted by state") +
+  scale_color_discrete(guide = FALSE)
 ```
 
