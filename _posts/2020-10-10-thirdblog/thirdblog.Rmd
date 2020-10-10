@@ -17,14 +17,8 @@ output:
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-<html>
-<head><title>Shiny App Iframe</title></head>
-<body>
-<iframe id="example1" src="https://ltmoo2.shinyapps.io/shiny-assessment-ltmoo2/" style="border: none; width: 1000px; height: 850px" frameborder="0"></iframe>
-</body>
-</html>
 
 ```{r, layout="l-screen-inset shaded"}
-knitr::include_app('https://ltmoo2.shinyapps.io/shiny-assessment-ltmoo2/', height = '800px')
+knitr::include_app('https://ltmoo2.shinyapps.io/shiny-assessment-ltmoo2/', height = '1000px')
 ```
 
