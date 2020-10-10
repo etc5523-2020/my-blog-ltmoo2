@@ -2,7 +2,7 @@
   {
     "path": "posts/2020-10-10-thirdblog/",
     "title": "Blog Post 3",
-    "description": "A short description of the post.",
+    "description": "This blog post differs to the first two as it is a self-reflection focusing on a previously constructed shiny application, the purpose of which was to explore COVID-19 related data in the United States of America (USA). Rather than analysing the findings made possible by the app, a self-review of the analysis process will be undertaken focusing on four key questions.",
     "author": [
       {
         "name": "Lachlan Moody 27809951",
@@ -12,7 +12,7 @@
     "date": "2020-10-10",
     "categories": [],
     "preview": "posts/2020-10-10-thirdblog/images/1140-american-flag-myths.jpg",
-    "last_modified": "2020-10-10T21:24:45+11:00",
+    "last_modified": "2020-10-10T21:28:37+11:00",
     "input_file": "thirdblog.utf8.md"
   },
   {
