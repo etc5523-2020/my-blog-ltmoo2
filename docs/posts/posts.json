@@ -1,5 +1,21 @@
 [
   {
+    "path": "posts/2020-10-10-thirdblog/",
+    "title": "Blog Post 3",
+    "description": "A short description of the post.",
+    "author": [
+      {
+        "name": "Lachlan Moody 27809951",
+        "url": {}
+      }
+    ],
+    "date": "2020-10-10",
+    "categories": [],
+    "preview": "posts/2020-10-10-thirdblog/images/1140-american-flag-myths.jpg",
+    "last_modified": "2020-10-10T21:01:16+11:00",
+    "input_file": {}
+  },
+  {
     "path": "posts/2020-09-16-secondblog/",
     "title": "Blog Post 2",
     "description": "This blog post explores how COVID-19 has spread in South America. Following this initial exploration, a deeper analysis of the region's hardest hittest country, Brazil, observes how the virus has impacted different areas of the nation.",
@@ -12,8 +28,8 @@
     "date": "2020-09-16",
     "categories": [],
     "preview": "posts/2020-09-16-secondblog/images/brazil-flag-waving-mast.jpg",
-    "last_modified": "2020-09-18T14:53:33+10:00",
-    "input_file": "secondblog.utf8.md"
+    "last_modified": "2020-09-18T14:53:34+10:00",
+    "input_file": {}
   },
   {
     "path": "posts/firstblog/",
