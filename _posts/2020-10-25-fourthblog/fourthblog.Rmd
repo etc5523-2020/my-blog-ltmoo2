@@ -17,7 +17,16 @@ output:
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-Distill is a publication format for scientific and technical writing, native to the web.
+## Package Overview & Author Details
+The purpose of this blog post is to provide a peer review of the R package produced by fellow-Monash student Chengzhi Ye, titled **`CovidYe`**, contained within the GitHub repository [etc5523-2020/r-package-assessment-Year-97](https://github.com/etc5523-2020/r-package-assessment-Year-97).   
 
-Learn more about using Distill at <https://rstudio.github.io/distill>.
+This package was constructed in accordance with the instructions for assignment 3 for ETC5523, and its primary function is to provide a shiny application that allows users to explore COVID-19 related data in a package format. More specifically, according to the readme file, the package provides information on the countries most affected by the virus and contains one data set and three additional functions designed to create visualisations with interactive elements presented using a shiny application.  
+
+For the purposes of this review, the package was installed into R Studio on the 25/10/2020 using the following command provided in the readme:
+
+```{r, eval=FALSE, echo=TRUE}
+# install.packages("devtools")
+devtools::install_github("etc5523-2020/r-package-assessment-Year-97")
+```
+
 
