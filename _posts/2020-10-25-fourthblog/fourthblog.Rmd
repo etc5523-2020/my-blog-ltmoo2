@@ -11,6 +11,7 @@ date: 10-25-2020
 output:
   distill::distill_article:
     self_contained: false
+bibliography: biblio.bib
 ---
 
 ```{r setup, include=FALSE}
@@ -34,6 +35,24 @@ devtools::install_github("etc5523-2020/r-package-assessment-Year-97")
 
 
 ## Package Improvements
+There were a number of issues that were found when trying to navigate through the package and launch the shiny application itself that if fixed would improve the functionality and usability of the **`CovidYe`** package.  
+Firstly, in both the readme file on GitHub and [vignette website]( https://etc5523-2020.github.io/r-package-assessment-Year-97/articles/COVID.html) there is no instruction to load the library in before being told to launch the app. While it may be a reasonable assumption that only experienced R users would be downloading this package, an extra section containing the following code below would expand the accessibility of what has been created for all users of the software.
+
+```{r, eval=FALSE, echo=TRUE}
+library(CovidYe)
+launch_app()
+```
+
+Secondly, and perhaps more of an important issue, the `launch_app()` function that had been created did not work initially when ran in a R console. Instead the error message ` Error in library(coronavirus) : there is no package called ‘coronavirus’` appeared. While I was able to get around this by installing this package separately, users unfamiliar with R may have faced difficulties getting the shiny application to run. This error was caused as `library(coronavirus` was called within the app.R file without being imported by the package. To resolve this issue the package `coronavirus`  could’ve been added to the package dependencies using the following code below:
+
+```{r, eval=FALSE, echo=TRUE}
+usethis::use_package("coronavirus")
+```
+
+
+An additional error was encountered when trying to run the `launch_app()` function after the aforementioned problem was resolved. The user-created function `Inputselect()` was causing the message `Error in shiny::selectInput(inputId = ID, "Which country do you choose",  :  argument "chosen_column" is missing, with no default` to appear in the console. Unfortunately this problem could not be resolved without downloading the [entire package from GitHub](https://github.com/etc5523-2020/r-package-assessment-Year-97) and altering the code within the app.R file to provide a default `”chosen_column”`. Luckily the documentation provided for this function made this an easy fix as the different acceptable values were clearly stated and were able to be included in the function call. Once done this allowed the application to be launched without error.  
+
+Finally, regarding the app itself, while many detailed insights and visually impressive graphics are provided in a logical and coherent layout, it could have been improved with some additional stylistic choices. This could have been achieved by adding some simple CSS or even simply by using the shinythemes package[@themes].
 
 
 

@@ -42,15 +42,17 @@
 <meta property="twitter:description" content="This blog post expands on the theme of reflection and review from the third blog post. While that post focused on a self-assessment, this one will expand into the area of peer review, the context of which will be the previously completed R package assessment for ETC5523."/>
 
 <!--/radix_placeholder_meta_tags-->
+  
+  <meta name="citation_reference" content="citation_title=Shinythemes: Themes for shiny;citation_publication_date=2018;citation_author=Winston Chang"/>
   <!--radix_placeholder_rmarkdown_metadata-->
 
 <script type="text/json" id="radix-rmarkdown-metadata">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","preview","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Blog Post 4"]},{"type":"character","attributes":{},"value":["This blog post expands on the theme of reflection and review from the third blog post. While that post focused on a self-assessment, this one will expand into the area of peer review, the context of which will be the previously completed R package assessment for ETC5523."]},{"type":"character","attributes":{},"value":["images/covid19.jpg"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Lachlan Moody 27809951"]},{"type":"character","attributes":{},"value":["Monash University"]},{"type":"character","attributes":{},"value":["https://www.monash.edu/"]}]}]},{"type":"character","attributes":{},"value":["10-25-2020"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","preview","author","date","output","bibliography"]}},"value":[{"type":"character","attributes":{},"value":["Blog Post 4"]},{"type":"character","attributes":{},"value":["This blog post expands on the theme of reflection and review from the third blog post. While that post focused on a self-assessment, this one will expand into the area of peer review, the context of which will be the previously completed R package assessment for ETC5523."]},{"type":"character","attributes":{},"value":["images/covid19.jpg"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Lachlan Moody 27809951"]},{"type":"character","attributes":{},"value":["Monash University"]},{"type":"character","attributes":{},"value":["https://www.monash.edu/"]}]}]},{"type":"character","attributes":{},"value":["10-25-2020"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["biblio.bib"]}]}
 </script>
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["fourthblog_files/bowser-1.9.3/bowser.min.js","fourthblog_files/distill-2.2.21/template.v2.js","fourthblog_files/jquery-1.11.3/jquery.min.js","fourthblog_files/webcomponents-2.0.0/webcomponents.js","images/covid19.jpg"]}
+  {"type":"character","attributes":{},"value":["biblio.bib","fourthblog_files/bowser-1.9.3/bowser.min.js","fourthblog_files/distill-2.2.21/template.v2.js","fourthblog_files/jquery-1.11.3/jquery.min.js","fourthblog_files/webcomponents-2.0.0/webcomponents.js","images/covid19.jpg"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 
@@ -1396,6 +1398,20 @@ devtools::install_github(&quot;etc5523-2020/r-package-assessment-Year-97&quot;)<
 </div>
 <h2 id="package-execution">Package Execution</h2>
 <h2 id="package-improvements">Package Improvements</h2>
+<p>There were a number of issues that were found when trying to navigate through the package and launch the shiny application itself that if fixed would improve the functionality and usability of the <strong><code>CovidYe</code></strong> package.<br />
+Firstly, in both the readme file on GitHub and <a href="https://etc5523-2020.github.io/r-package-assessment-Year-97/articles/COVID.html">vignette website</a> there is no instruction to load the library in before being told to launch the app. While it may be a reasonable assumption that only experienced R users would be downloading this package, an extra section containing the following code below would expand the accessibility of what has been created for all users of the software.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+library(CovidYe)
+launch_app()</code></pre>
+</div>
+<p>Secondly, and perhaps more of an important issue, the <code>launch_app()</code> function that had been created did not work initially when ran in a R console. Instead the error message <code>Error in library(coronavirus) : there is no package called ‘coronavirus’</code> appeared. While I was able to get around this by installing this package separately, users unfamiliar with R may have faced difficulties getting the shiny application to run. This error was caused as <code>library(coronavirus</code> was called within the app.R file without being imported by the package. To resolve this issue the package <code>coronavirus</code> could’ve been added to the package dependencies using the following code below:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+usethis::use_package(&quot;coronavirus&quot;)</code></pre>
+</div>
+<p>An additional error was encountered when trying to run the <code>launch_app()</code> function after the aforementioned problem was resolved. The user-created function <code>Inputselect()</code> was causing the message <code>Error in shiny::selectInput(inputId = ID, "Which country do you choose",  :  argument "chosen_column" is missing, with no default</code> to appear in the console. Unfortunately this problem could not be resolved without downloading the <a href="https://github.com/etc5523-2020/r-package-assessment-Year-97">entire package from GitHub</a> and altering the code within the app.R file to provide a default <code>”chosen_column”</code>. Luckily the documentation provided for this function made this an easy fix as the different acceptable values were clearly stated and were able to be included in the function call. Once done this allowed the application to be launched without error.</p>
+<p>Finally, regarding the app itself, while many detailed insights and visually impressive graphics are provided in a logical and coherent layout, it could have been improved with some additional stylistic choices. This could have been achieved by adding some simple CSS or even simply by using the shinythemes package<span class="citation" data-cites="themes">(Chang <a href="#ref-themes" role="doc-biblioref">2018</a>)</span>.</p>
 <h2 id="key-learnings">Key Learnings</h2>
 <h2 id="review-checklist" class="appendix">Review Checklist</h2>
 <p><strong>Documentation</strong><br />
@@ -1408,6 +1424,11 @@ The package includes all the following forms of documentation:<br />
 - [ ] <strong>Installation:</strong> Installation succeeds as documented.<br />
 - [ ] <strong>Functionality:</strong> Any functional claims of the software been confirmed.<br />
 - [ ] <strong>Automated tests:</strong> Unit tests cover essential functions of the package and a reasonable range of inputs and conditions. All tests pass on the local machine.</p>
+<div id="refs" class="references" role="doc-bibliography">
+<div id="ref-themes">
+<p>Chang, Winston. 2018. <em>Shinythemes: Themes for Shiny</em>. <a href="https://CRAN.R-project.org/package=shinythemes">https://CRAN.R-project.org/package=shinythemes</a>.</p>
+</div>
+</div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
@@ -1420,6 +1441,15 @@ The package includes all the following forms of documentation:<br />
 <!--/radix_placeholder_site_after_body-->
 <!--radix_placeholder_appendices-->
 <div class="appendix-bottom"></div>
+<script id="distill-bibliography" type="text/bibtex">
+@Manual{themes,
+    title = {shinythemes: Themes for Shiny},
+    author = {Winston Chang},
+    year = {2018},
+    note = {R package version 1.1.2},
+    url = {https://CRAN.R-project.org/package=shinythemes},
+  }
+</script>
 <!--/radix_placeholder_appendices-->
 <!--radix_placeholder_navigation_after_body-->
 <!--/radix_placeholder_navigation_after_body-->
