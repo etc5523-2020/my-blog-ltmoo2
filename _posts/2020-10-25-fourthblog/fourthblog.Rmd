@@ -1,0 +1,23 @@
+---
+title: "Blog Post 4"
+description: |
+  This blog post expands on the theme of reflection and review from the third blog post. While that post focused on a self-assessment, this one will expand into the area of peer review, the context of which will be the previously completed R package assessment for ETC5523.
+preview: images/covid19.jpg
+author:
+  - name: Lachlan Moody 27809951
+    affiliation: Monash University
+    affiliation_url: https://www.monash.edu/
+date: 10-25-2020
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+Distill is a publication format for scientific and technical writing, native to the web.
+
+Learn more about using Distill at <https://rstudio.github.io/distill>.
+

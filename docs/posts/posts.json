@@ -1,5 +1,21 @@
 [
   {
+    "path": "posts/2020-10-25-fourthblog/",
+    "title": "Blog Post 4",
+    "description": "This blog post expands on the theme of reflection and review from the third blog post. While that post focused on a self-assessment, this one will expand into the area of peer review, the context of which will be the previously completed R package assessment for ETC5523.",
+    "author": [
+      {
+        "name": "Lachlan Moody 27809951",
+        "url": {}
+      }
+    ],
+    "date": "2020-10-25",
+    "categories": [],
+    "preview": "posts/2020-10-25-fourthblog/images/covid19.jpg",
+    "last_modified": "2020-10-25T15:59:07+11:00",
+    "input_file": "fourthblog.utf8.md"
+  },
+  {
     "path": "posts/2020-10-10-thirdblog/",
     "title": "Blog Post 3",
     "description": "This blog post differs to the first two as it is a self-reflection focusing on a previously constructed shiny application, the purpose of which was to explore COVID-19 related data in the United States of America (USA). Rather than analysing the findings made possible by the app, a self-review of the analysis process will be undertaken focusing on four key questions.",
@@ -13,7 +29,7 @@
     "categories": [],
     "preview": "posts/2020-10-10-thirdblog/images/1140-american-flag-myths.jpg",
     "last_modified": "2020-10-11T15:44:25+11:00",
-    "input_file": "thirdblog.utf8.md"
+    "input_file": {}
   },
   {
     "path": "posts/2020-09-16-secondblog/",
