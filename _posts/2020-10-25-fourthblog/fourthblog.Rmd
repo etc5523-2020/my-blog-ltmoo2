@@ -57,17 +57,23 @@ Finally, regarding the app itself, while many detailed insights and visually imp
 
 
 ## Key Learnings
+There were several key learnings gained from conducting this review that I will take forward into my own package development and coding practices in the future.  
+Firstly, there is a great need to be explicit in your instructions and comments when undertaking any programming activity. This is especially important in something such as a R package which is likely to be shared with other users. What may be clear to one person at a point in time may be confusing to another who was not involved in the development phase. This was evident in the discussion above regarding the missing `library()` call in the documentation which shows what can happen with poor instructions. On the other hand, the `Inputselect` issue was able to be resolved due to good documentation and clear instructions.  
+
+Secondly, and somewhat combined with the above, is the need to understand your audience for what you are creating. While the issues discussed above are easily fixed by someone with knowledge of R and package development, some users may get stuck and never end up viewing what has been created. In comparison the app itself is well designed to cater to any audience as there are many detailed explanations and instructions provided throughout with easily interpretable plots.  
+
+Finally, the importance of error checking and testing cannot be understated. What may work on the creators computer and software setup may fail on others. The issues faced could’ve been avoided by first following the created instructions on a fresh device or R session to see if the package could be successfully and easily run. This would’ve unveiled the missing dependency for the `coronavirus` package and the failure of the created `Inputselect` function thus creating a more user-friendly package.
 
 
 ## Review Checklist {.appendix}
 **Documentation**  
 The package includes all the following forms of documentation:  
-- [ ] **Installation instructions:** for the package is found in README  
-- [ ] **Vignette(s)** demonstrating major functionality that runs successfully locally  
-- [ ] **Function Documentation:** for all exported functions in R help  
-- [ ] **Examples** for all exported functions in R Help that run successfully locally  
+- [x] **Installation instructions for the package is found in README:** Clear and easy to follow instructions are available in GitHub readme file.     
+- [x] **Vignette(s) demonstrating major functionality that runs successfully locally:** Vignette provided online using `pkgdown` and contain information on the entire package and its various functions.  
+- [x] **Function Documentation for all exported functions in R help:** All functions exported by the package have some form of documentation.  
+- [ ] **Examples for all exported functions in R Help that run successfully locally:** Examples for function `Easykable` and `coronavirus` not found  
+
 **Functionality**  
-- [ ] **Installation:** Installation succeeds as documented.  
-- [ ] **Functionality:** Any functional claims of the software been confirmed.  
-- [ ] **Automated tests:** Unit tests cover essential functions of the package
-and a reasonable range of inputs and conditions. All tests pass on the local machine.
+- [x] **Installation Installation succeeds as documented:** Package is able to be installed into R without error or issue.  
+- [ ] **Functionality Any functional claims of the software been confirmed:** Function `launch_app` does not work on instal and `Inputselect` fails within app  
+- [x] **Automated tests Unit tests cover essential functions of the package and a reasonable range of inputs and conditions. All tests pass on the local machine:** At least three tests for each user created function that cleverly test the validity of the outputs created and all pass without error.
