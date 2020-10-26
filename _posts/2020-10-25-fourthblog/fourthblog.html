@@ -43,6 +43,8 @@
   <!--/radix_placeholder_meta_tags-->
   
   <meta name="citation_reference" content="citation_title=Shinythemes: Themes for shiny;citation_publication_date=2018;citation_author=Winston Chang"/>
+  <meta name="citation_reference" content="citation_title=Testthat: Get started with testing;citation_publication_date=2011;citation_volume=3;citation_author=Hadley Wickham"/>
+  <meta name="citation_reference" content="citation_title=Roxygen2: In-line documentation for r;citation_publication_date=2020;citation_author=Hadley Wickham;citation_author=Peter Danenberg;citation_author=GÃ¡bor CsÃ¡rdi;citation_author=Manuel Eugster"/>
   <!--radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-rmarkdown-metadata">
@@ -985,6 +987,9 @@
 devtools::install_github(&quot;etc5523-2020/r-package-assessment-Year-97&quot;)</code></pre>
 </div>
 <h2 id="package-execution">Package Execution</h2>
+<p>Based on reading the readme file and <a href="https://etc5523-2020.github.io/r-package-assessment-Year-97/articles/COVID.html">vignette website</a> it appeared that the package would allow the user to launch a shiny application that would convey information about COVID-19 around the world and the overall trend of various case types with interactivity built in. In addition, the <code>coronavirus</code> dataset would be made available for use (which is provided in the <code>coronavirus</code> package) that contains daily counts on various metrics for 118 countries, also, two functions would be available that enhanced both the user interface and server-side logic of the application. These functions would also have passed various unit tests created using<span class="citation" data-cites="test">(Wickham <a href="#ref-test" role="doc-biblioref">2011</a>)</span> and be documented using roxygen2<span class="citation" data-cites="doc">(Wickham et al. <a href="#ref-doc" role="doc-biblioref">2020</a>)</span>.</p>
+<p>On downloading the package, once some issues were resolved (discussed in the following section) the application was able to be launched by using the <code>launch_app()</code> command found within the package. This opened a shiny application with tables and visualisations that provided information on COVID-19. All the graphics and some of the tables also allowed for interactivity from the user’s perspective. The application-side of the package appears to successfully match what is described by the package documentation. Additionally, exploring the commands in the R console reveals appropriate documentation for the functions created.</p>
+<p>Examining the code itself by cloning the repository from <a href="https://github.com/etc5523-2020/r-package-assessment-Year-97">GitHub</a>, all functions created as part of the package are included in the shiny application code itself and (once adjusted) appear to run successfully when running the app locally and through the package function and are used appropriately throughout. Also, each of the functions have a number of unit tests assigned to them that test the outputs produced by them in various ways. All of these tests pass successfully when ran in R Studio displaying that some error testing has been conducted. However, there were some issues getting the package to a reviewable state. This issues encountered and potential solutions will be discussed in the following section.</p>
 <h2 id="package-improvements">Package Improvements</h2>
 <p>There were a number of issues that were found when trying to navigate through the package and launch the shiny application itself that if fixed would improve the functionality and usability of the <strong><code>CovidYe</code></strong> package.<br />
 Firstly, in both the readme file on GitHub and <a href="https://etc5523-2020.github.io/r-package-assessment-Year-97/articles/COVID.html">vignette website</a> there is no instruction to load the library in before being told to launch the app. While it may be a reasonable assumption that only experienced R users would be downloading this package, an extra section containing the following code below would expand the accessibility of what has been created for all users of the software.</p>
@@ -1020,6 +1025,12 @@ The package includes all the following forms of documentation:<br />
 <div id="ref-themes">
 <p>Chang, Winston. 2018. <em>Shinythemes: Themes for Shiny</em>. <a href="https://CRAN.R-project.org/package=shinythemes">https://CRAN.R-project.org/package=shinythemes</a>.</p>
 </div>
+<div id="ref-test">
+<p>Wickham, Hadley. 2011. “Testthat: Get Started with Testing.” <em>The R Journal</em> 3: 5–10. <a href="https://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf">https://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf</a>.</p>
+</div>
+<div id="ref-doc">
+<p>Wickham, Hadley, Peter Danenberg, Gábor Csárdi, and Manuel Eugster. 2020. <em>Roxygen2: In-Line Documentation for R</em>. <a href="https://CRAN.R-project.org/package=roxygen2">https://CRAN.R-project.org/package=roxygen2</a>.</p>
+</div>
 </div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
@@ -1040,6 +1051,24 @@ The package includes all the following forms of documentation:<br />
     year = {2018},
     note = {R package version 1.1.2},
     url = {https://CRAN.R-project.org/package=shinythemes},
+  }
+  
+@Article{test,
+    author = {Hadley Wickham},
+    title = {testthat: Get Started with Testing},
+    journal = {The R Journal},
+    year = {2011},
+    volume = {3},
+    pages = {5--10},
+    url = {https://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf},
+  }
+  
+@Manual{doc,
+    title = {roxygen2: In-Line Documentation for R},
+    author = {Hadley Wickham and Peter Danenberg and GÃ¡bor CsÃ¡rdi and Manuel Eugster},
+    year = {2020},
+    note = {R package version 7.1.1},
+    url = {https://CRAN.R-project.org/package=roxygen2},
   }
 </script>
 <!--/radix_placeholder_appendices-->

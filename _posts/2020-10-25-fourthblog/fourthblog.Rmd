@@ -31,6 +31,11 @@ devtools::install_github("etc5523-2020/r-package-assessment-Year-97")
 ```
 
 ## Package Execution
+Based on reading the readme file and [vignette website]( https://etc5523-2020.github.io/r-package-assessment-Year-97/articles/COVID.html) it appeared that the package would allow the user to launch a shiny application that would convey information about COVID-19 around the world and the overall trend of various case types with interactivity built in. In addition, the `coronavirus` dataset would be made available for use (which is provided in the `coronavirus` package) that contains daily counts on various metrics for 118 countries, also, two functions would be available that enhanced both the user interface and server-side logic of the application.  These functions would also have passed various unit tests created using[@test]  and be documented using roxygen2[@doc].
+
+On downloading the package, once some issues were resolved (discussed in the following section) the application was able to be launched by using the `launch_app()` command found within the package. This opened a shiny application with tables and visualisations that provided information on COVID-19. All the graphics and some of the tables also allowed for interactivity from the user’s perspective. The application-side of the package appears to successfully match what is described by the package documentation.  Additionally, exploring the commands in the R console reveals appropriate documentation for the functions created.
+
+Examining the code itself by cloning the repository from [GitHub](https://github.com/etc5523-2020/r-package-assessment-Year-97), all functions created as part of the package are included in the shiny application code itself and (once adjusted) appear to run successfully when running the app locally and through the package function and are used appropriately throughout. Also, each of the functions have a number of unit tests assigned to them that test the outputs produced by them in various ways. All of these tests pass successfully when ran in R Studio displaying that some error testing has been conducted. However, there were some issues getting the package to a reviewable state. This issues encountered and potential solutions will be discussed in the following section.
 
 
 
